@@ -110,6 +110,19 @@ function sentenceMarkup(q) {
   return highlightSentence(q.sentence, q.word).map(p => p.highlight ? `<mark>${esc(p.text)}</mark>` : esc(p.text)).join("");
 }
 
+function formatTimeTaken(startTime, completedTime) {
+  const start = Date.parse(startTime);
+  const end = Date.parse(completedTime);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return "—";
+  const totalSeconds = Math.floor((end - start) / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours) return `${hours}h ${minutes}m ${seconds}s`;
+  if (minutes) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+}
+
 function renderQuiz() {
   const q = state.questions[state.currentQuestionIndex];
   const total = state.questions.length;
@@ -230,6 +243,7 @@ function renderResults() {
         <div><span>Correct</span><strong>${result.correct}</strong></div>
         <div><span>Incorrect</span><strong>${result.incorrect}</strong></div>
         <div><span>Total</span><strong>${result.total}</strong></div>
+        ${quizConfig.showTimeTakenOnResults ? `<div><span>Time Taken</span><strong>${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
       </div>
       <div class="result-actions">
         ${quizConfig.enableReview ? '<button id="review-btn" class="secondary-btn">Review answers</button>' : ""}
