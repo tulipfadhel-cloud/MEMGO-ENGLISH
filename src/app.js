@@ -63,7 +63,12 @@ function restore() {
     clearSession(quizConfig.storageKey);
     return;
   }
-  state = { ...state, status:"active", studentName:restoredName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime, introNoticeSeen:true };
+  const current = questions[saved.currentQuestionIndex];
+  const selected = current ? saved.answers?.[current.id] : null;
+  const practiceFeedback = quizConfig.mode === "practice" && selected
+    ? (selected === current.correctImageId ? "correct" : "incorrect")
+    : null;
+  state = { ...state, status:"active", studentName:restoredName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime, practiceFeedback, introNoticeSeen:true };
 }
 
 function transitionRender(afterRender) {
@@ -106,6 +111,7 @@ function renderIntro(error = "") {
       ${logoMarkup()}
       <div class="intro-copy" dir="rtl">
         <span class="eyebrow">MEMGO ENGLISH</span>
+        <p class="provider-line">مقدّم من منصة <strong>MEMGO ENGLISH</strong></p>
         <h1>اختبار المفردات بالصور</h1>
         <p>اقرأ الجملة، افهم معنى الكلمة المحددة من السياق، ثم اختر الصورة التي تعبّر عن معناها بشكل صحيح.</p>
       </div>
@@ -161,6 +167,7 @@ function renderQuizNotice() {
       ${logoMarkup()}
       <div class="quiz-notice-symbol" aria-hidden="true">!</div>
       <h1>قبل أن تبدأ</h1>
+      <p class="notice-provider">كوز مقدّم من <strong>MEMGO ENGLISH</strong></p>
       <p>اختر صورة واحدة فقط لكل سؤال. <strong>اختيارك الأول نهائي</strong> وسيُحتسب ضمن نتيجتك، لذلك تأكد من إجابتك قبل الضغط على الصورة.</p>
       <div class="notice-loading" aria-hidden="true"><span></span></div>
     </section>
