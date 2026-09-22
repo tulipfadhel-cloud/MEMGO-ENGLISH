@@ -171,8 +171,13 @@ function renderQuiz() {
   const progress = ((state.currentQuestionIndex + 1) / total) * 100;
   root.innerHTML = `<main class="quiz-page">
     <header class="quiz-header">
-      ${logoMarkup()}
-      <div class="student-chip"><span>Student</span><strong title="${esc(state.studentName)}">${esc(state.studentName)}</strong></div>
+      <div class="quiz-header-inner">
+        ${logoMarkup()}
+        <div class="student-chip" dir="rtl" aria-label="اسم الطالب">
+          <span>الطالب:</span>
+          <strong title="${esc(state.studentName)}">${esc(state.studentName)}</strong>
+        </div>
+      </div>
     </header>
     <section class="quiz-content">
       <div class="progress-row"><span>Question <strong>${state.currentQuestionIndex + 1}</strong> of ${total}</span><span>${Math.round(progress)}%</span></div>
