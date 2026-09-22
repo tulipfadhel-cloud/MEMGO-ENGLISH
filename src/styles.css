@@ -232,3 +232,41 @@ button,input{font:inherit}
 .provider-line{margin:0 0 10px!important;color:#66758c!important;font-size:13px!important;line-height:1.5!important}
 .provider-line strong,.notice-provider strong{color:#315fba}
 .notice-provider{margin:0 auto 10px!important;color:#66758c!important;font-size:12px!important}
+
+
+/* Premium MEMGO quiz identity bar */
+.quiz-header{
+  padding:12px 20px;
+  background:#fff;
+  border-bottom:1px solid #e6edf8;
+  box-shadow:0 4px 18px rgba(39,67,111,.045);
+}
+.quiz-header-inner{min-height:64px;gap:20px}
+.quiz-brand-lockup{min-width:0;display:flex;align-items:center;gap:14px}
+.quiz-brand-mark{flex:0 0 auto;width:58px;height:58px;display:grid;place-items:center;border:1px solid #e1eaf8;border-radius:16px;background:#fff;overflow:hidden}
+.quiz-brand-mark .brand{width:100%;height:100%;display:grid;place-items:center}
+.quiz-brand-mark .brand-logo{width:54px!important;max-width:none;height:54px!important;object-fit:contain}
+.quiz-brand-copy{min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.1}
+.quiz-brand-copy strong{font-size:21px;letter-spacing:.045em;color:#24334d;font-weight:900;white-space:nowrap}
+.quiz-brand-copy span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#71809a;font-weight:700;white-space:nowrap}
+.quiz-header .student-chip{margin-inline-start:auto;min-height:48px;max-width:42%;gap:5px;padding:7px 13px;border:1px solid #dce7f8;border-radius:14px;background:#f7faff;flex-direction:column;align-items:flex-start;justify-content:center}
+.quiz-header .student-chip .student-label{display:block;font-size:10px;color:#738199;font-weight:700;line-height:1}
+.quiz-header .student-chip strong{max-width:230px;font-size:14px;color:#22314a;font-weight:850}
+@media(max-width:700px){
+  .quiz-header{padding:9px 12px}
+  .quiz-header-inner{min-height:58px;gap:10px}
+  .quiz-brand-lockup{gap:9px}
+  .quiz-brand-mark{width:48px;height:48px;border-radius:13px}
+  .quiz-brand-mark .brand-logo{width:45px!important;height:45px!important}
+  .quiz-brand-copy strong{font-size:16px;letter-spacing:.025em}
+  .quiz-brand-copy span{font-size:8px;letter-spacing:.045em}
+  .quiz-header .student-chip{max-width:43%;min-height:44px;padding:6px 9px;border-radius:12px}
+  .quiz-header .student-chip .student-label{display:block;font-size:9px}
+  .quiz-header .student-chip strong{max-width:120px;font-size:12px}
+}
+@media(max-width:390px){
+  .quiz-brand-copy strong{font-size:14px}
+  .quiz-brand-copy span{display:none}
+  .quiz-header .student-chip{max-width:40%;padding-inline:8px}
+  .quiz-header .student-chip strong{max-width:92px;font-size:11px}
+}
