@@ -1,5 +1,5 @@
 export const quizConfig = Object.freeze({
-  mode: "assessment",
+  mode: "practice",
   randomizeQuestions: true,
   randomizeAnswers: true,
   enableReview: true,
