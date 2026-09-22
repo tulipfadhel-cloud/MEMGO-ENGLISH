@@ -175,3 +175,18 @@ button,input{font:inherit}
 .single-review-image{display:block}
 .single-review-image figure{width:100%}
 @media(max-width:700px){.correct-only-review{grid-template-columns:1fr}.single-review-image{width:min(100%,360px);margin:0 auto}}
+
+/* Quiz actions + safe early exit */
+.question-action-buttons{display:flex;align-items:center;gap:10px}
+.end-quiz-btn,.end-quiz-confirm{border:1px solid #e7bcbc;background:#fff4f4;color:#9b3f3f;border-radius:12px;font-weight:800;cursor:pointer;transition:background .16s ease,border-color .16s ease}
+.end-quiz-btn{min-height:48px;padding:0 16px}
+.end-quiz-btn:hover,.end-quiz-confirm:hover{background:#fde9e9;border-color:#dda4a4}
+.end-quiz-btn:focus-visible,.end-quiz-confirm:focus-visible{outline:3px solid rgba(201,75,75,.18);outline-offset:2px}
+.end-quiz-dialog{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px;background:rgba(24,32,45,.38);backdrop-filter:blur(3px)}
+.end-quiz-modal{width:min(100%,440px);padding:28px;background:#fff;border:1px solid #e6eaf0;border-radius:20px;box-shadow:0 24px 70px rgba(22,32,48,.18)}
+.end-quiz-modal h2{margin:0 0 10px;font-size:23px;color:#273247}
+.end-quiz-modal p{margin:0;color:#657084;line-height:1.75;font-size:14px}
+.end-quiz-modal-actions{display:flex;gap:10px;margin-top:24px}
+.end-quiz-modal-actions button{min-height:46px;padding:0 16px}
+.end-quiz-confirm{flex:1}
+@media(max-width:700px){.question-action-buttons{width:100%;flex-direction:column-reverse}.question-action-buttons button{width:100%}.end-quiz-modal-actions{flex-direction:column}.end-quiz-modal-actions button{width:100%}}
