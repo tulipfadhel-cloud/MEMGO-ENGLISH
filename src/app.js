@@ -142,6 +142,10 @@ function renderQuiz() {
         <p class="sentence">${sentenceMarkup(q)}</p>
         <div class="divider"></div>
         <div class="choice-heading"><h2>Choose the best image</h2><span>Select one answer</span></div>
+        <div class="answer-notice" role="note">
+          <span class="answer-notice-icon" aria-hidden="true">!</span>
+          <p><strong>Choose carefully.</strong> You can select only one image. Your first choice is final and will be counted in your score.</p>
+        </div>
         <div class="image-grid" role="radiogroup" aria-label="Image answers">
           ${q.images.map((img, idx) => imageChoice(q, img, idx)).join("")}
         </div>
