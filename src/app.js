@@ -284,50 +284,56 @@ function preloadNext() {
 function renderResults() {
   const result = calculateResults(state.questions, state.answers);
   root.innerHTML = `<main class="results-shell">
-    <section class="results-card">
+    <section class="results-card" dir="rtl">
       ${logoMarkup()}
-      <span class="eyebrow">QUIZ COMPLETE</span>
-      <h1>Well done, ${esc(state.studentName)}.</h1>
-      <p class="result-sub">Your visual vocabulary assessment is complete.</p>
+      <span class="eyebrow">اكتمل الكوز</span>
+      <h1>أحسنت، ${esc(state.studentName)}.</h1>
+      <p class="result-sub">هذه تفاصيل نتيجتك في اختبار المفردات.</p>
       <div class="score-block"><strong>${result.correct}<span>/ ${result.total}</span></strong><em>${result.percentage}%</em></div>
       <div class="stats">
-        <div><span>Correct</span><strong>${result.correct}</strong></div>
-        <div><span>Incorrect</span><strong>${result.incorrect}</strong></div>
-        <div><span>Total</span><strong>${result.total}</strong></div>
-        ${quizConfig.showTimeTakenOnResults ? `<div><span>Time Taken</span><strong>${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
+        <div><span>الإجابات الصحيحة</span><strong>${result.correct}</strong></div>
+        <div><span>الإجابات الخاطئة</span><strong>${result.incorrect}</strong></div>
+        <div><span>مجموع الأسئلة</span><strong>${result.total}</strong></div>
+        ${quizConfig.showTimeTakenOnResults ? `<div><span>الوقت المستغرق</span><strong dir="ltr">${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
       </div>
       <div class="result-actions">
-        ${quizConfig.enableReview ? '<button id="review-btn" class="secondary-btn">Review answers</button>' : ""}
-        <button id="restart-btn" class="primary-btn">Restart quiz <span aria-hidden="true">↻</span></button>
+        ${quizConfig.enableReview ? '<button id="review-btn" class="secondary-btn">تفاصيل الإجابات</button>' : ""}
+        <button id="restart-btn" class="primary-btn">إعادة الكوز <span aria-hidden="true">↻</span></button>
       </div>
     </section>
     ${state.reviewOpen ? reviewMarkup() : ""}
   </main>`;
   document.querySelector("#restart-btn").addEventListener("click", restart);
-  document.querySelector("#review-btn")?.addEventListener("click", () => { state.reviewOpen = !state.reviewOpen; renderResults(); wireImages(); });
+  document.querySelector("#review-btn")?.addEventListener("click", () => {
+    state.reviewOpen = !state.reviewOpen;
+    renderResults();
+    wireImages();
+    if (state.reviewOpen) requestAnimationFrame(() => document.querySelector(".review-section")?.scrollIntoView({ behavior:"smooth", block:"start" }));
+  });
   wireImages();
 }
 
 function reviewMarkup() {
-  return `<section class="review-section"><div class="review-title"><span class="eyebrow">ANSWER REVIEW</span><h2>Your responses</h2></div>
+  return `<section class="review-section" dir="rtl">
+    <div class="review-title"><span class="eyebrow">مراجعة الإجابات</span><h2>تفاصيل إجاباتك</h2><p>يمكنك مراجعة كل سؤال ومعرفة اختيارك والصورة الصحيحة.</p></div>
     <div class="review-list">${state.questions.map((q,i) => {
       const selectedId = state.answers[q.id];
       const selected = q.images.find(img => img.id === selectedId);
       const correct = q.images.find(img => img.id === q.correctImageId);
       const isCorrect = selectedId === q.correctImageId;
-      return `<article class="review-card">
-        <div class="review-copy"><span>Question ${i+1}</span><h3>${esc(q.word)}</h3><p>${sentenceMarkup(q)}</p><div class="status ${isCorrect ? "is-correct" : "is-incorrect"}"><span aria-hidden="true">${isCorrect ? "✓" : "!"}</span>${isCorrect ? "Correct" : "Incorrect"}</div></div>
+      return `<article class="review-card ${isCorrect ? "review-correct" : "review-incorrect"}">
+        <div class="review-copy"><span>السؤال ${i+1}</span><h3 dir="ltr">${esc(q.word)}</h3><p dir="ltr">${sentenceMarkup(q)}</p><div class="status ${isCorrect ? "is-correct" : "is-incorrect"}"><span aria-hidden="true">${isCorrect ? "✓" : "!"}</span>${isCorrect ? "إجابة صحيحة" : "إجابة خاطئة"}</div></div>
         <div class="review-images">
-          <figure><figcaption>Your answer</figcaption>${reviewImage(selected)}</figure>
-          <figure><figcaption>Correct image</figcaption>${reviewImage(correct)}</figure>
+          <figure><figcaption>اختيارك</figcaption>${reviewImage(selected)}</figure>
+          <figure><figcaption>الإجابة الصحيحة</figcaption>${reviewImage(correct)}</figure>
         </div>
       </article>`;
     }).join("")}</div></section>`;
 }
 
 function reviewImage(img) {
-  if (!img) return '<div class="review-placeholder">No answer</div>';
-  return `<div class="review-image"><img src="${esc(img.src)}" alt="${esc(img.alt || "Review image")}" loading="lazy"><span class="broken-placeholder">Image unavailable</span></div>`;
+  if (!img) return '<div class="review-placeholder">لا توجد إجابة</div>';
+  return `<div class="review-image"><img src="${esc(img.src)}" alt="${esc(img.alt || "صورة الإجابة")}" loading="lazy"><span class="broken-placeholder">الصورة غير متاحة</span></div>`;
 }
 
 function restart() {
