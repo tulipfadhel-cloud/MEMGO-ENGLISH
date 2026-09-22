@@ -270,3 +270,31 @@ button,input{font:inherit}
   .quiz-header .student-chip{max-width:40%;padding-inline:8px}
   .quiz-header .student-chip strong{max-width:92px;font-size:11px}
 }
+
+
+/* Separate student identity from MEMGO brand */
+.quiz-header-inner{flex-wrap:wrap}
+.quiz-brand-lockup{width:100%}
+.quiz-header .student-chip{
+  width:fit-content;
+  max-width:min(100%,320px);
+  margin-inline-start:auto;
+  margin-top:2px;
+}
+@media(max-width:700px){
+  .quiz-header-inner{gap:8px}
+  .quiz-brand-lockup{width:100%}
+  .quiz-header .student-chip{
+    width:100%;
+    max-width:none;
+    margin:0;
+    min-height:40px;
+    flex-direction:row;
+    align-items:center;
+    justify-content:flex-start;
+    gap:7px;
+    padding:8px 10px;
+  }
+  .quiz-header .student-chip .student-label{font-size:10px}
+  .quiz-header .student-chip strong{max-width:none;font-size:12px}
+}
