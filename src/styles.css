@@ -13,3 +13,34 @@
 .intro-card .primary-btn:hover{filter:brightness(.98);transform:translateY(-1px)}
 .intro-note{text-align:center;margin:16px auto 0}
 @media(max-width:540px){.intro-shell{padding:14px}.intro-card{padding:30px 20px;border-radius:22px}.intro-card .brand{margin-bottom:30px}.intro-copy{margin-bottom:28px}.intro-copy h1{font-size:32px}}
+
+/* Start-screen alignment + seamless logo treatment */
+.intro-shell{
+  width:100%;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(16px,4vw,48px);
+  background:#fff;
+}
+.intro-card{
+  width:min(100%,620px);
+  margin:auto;
+  background:#fff;
+  border:1px solid #e8edf5;
+}
+.intro-card .brand{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin:0 auto 34px;
+}
+.intro-card .brand-logo{
+  display:block;
+  width:min(190px,58vw);
+  height:auto;
+  object-fit:contain;
+  mix-blend-mode:multiply;
+  background:transparent;
+}
