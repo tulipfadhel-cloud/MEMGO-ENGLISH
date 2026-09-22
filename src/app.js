@@ -351,7 +351,11 @@ function nextQuestion() {
     state.status = "complete";
     state.completedTime = new Date().toISOString();
     clearSession(quizConfig.storageKey);
-    transitionRender();
+    transitionRender(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
     return;
   }
   state.currentQuestionIndex += 1;
