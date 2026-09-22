@@ -369,7 +369,7 @@ function resultShareText() {
 
 function shareResultOnTelegram() {
   const text = resultShareText();
-  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent("https://t.me/")}&text=${encodeURIComponent(text)}`;
+  const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(text)}`;
   window.location.href = shareUrl;
 }
 
