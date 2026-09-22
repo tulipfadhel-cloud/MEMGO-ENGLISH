@@ -262,7 +262,6 @@ function selectAnswer(questionId, imageId) {
   persist();
   renderQuiz();
   wireImages();
-  document.querySelector("#next-btn")?.focus();
 }
 
 function feedbackMarkup(q) {
