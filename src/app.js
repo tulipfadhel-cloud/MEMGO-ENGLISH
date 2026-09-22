@@ -138,7 +138,12 @@ function renderQuiz() {
       <div class="progress-track" aria-label="Quiz progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}"><div style="width:${progress}%"></div></div>
       <article class="question-card">
         <span class="eyebrow">TARGET WORD</span>
-        <h1 class="target-word">${esc(q.word)}</h1>
+        <div class="word-row">
+          <h1 class="target-word">${esc(q.word)}</h1>
+          <button type="button" class="speak-btn" aria-label="استمع إلى نطق كلمة ${esc(q.word)}" title="استمع إلى النطق" data-word="${esc(q.word)}">
+            <span aria-hidden="true">🔊</span>
+          </button>
+        </div>
         <p class="sentence">${sentenceMarkup(q)}</p>
         <div class="divider"></div>
         <div class="choice-heading" dir="rtl"><h2>اختر الصورة الأنسب</h2><span>اختر إجابة واحدة فقط</span></div>
@@ -158,8 +163,25 @@ function renderQuiz() {
     </section>
   </main>`;
   document.querySelectorAll(".image-choice").forEach(btn => btn.addEventListener("click", () => selectAnswer(q.id, btn.dataset.imageId)));
+  document.querySelector(".speak-btn")?.addEventListener("click", event => speakWord(event.currentTarget.dataset.word, event.currentTarget));
   document.querySelector("#next-btn").addEventListener("click", nextQuestion);
   preloadNext();
+}
+
+function speakWord(word, button) {
+  if (!("speechSynthesis" in window) || !word) {
+    button?.setAttribute("title", "النطق غير متاح على هذا الجهاز");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-US";
+  utterance.rate = 0.82;
+  utterance.pitch = 1;
+  button?.classList.add("speaking");
+  utterance.onend = () => button?.classList.remove("speaking");
+  utterance.onerror = () => button?.classList.remove("speaking");
+  window.speechSynthesis.speak(utterance);
 }
 
 function imageChoice(q, img, idx) {
