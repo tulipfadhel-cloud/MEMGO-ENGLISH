@@ -362,38 +362,41 @@ function resultShareText() {
     "MEMGO ENGLISH — نتيجة الكوز",
     "",
     `اسم الطالب: ${state.studentName}`,
-    `الدرجة: ${result.correct}/${result.total} (${result.percentage}%)`,
+    `الدرجة: ${result.correct}/${result.total}`,
     `الكلمات التي أخفق بها: ${failedWords.length ? failedWords.join("، ") : "لا توجد — جميع الإجابات صحيحة"}`
   ].join("\n");
 }
 
 function shareResultOnTelegram() {
   const text = resultShareText();
-  const url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank", "noopener,noreferrer");
+  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent("https://t.me/")}&text=${encodeURIComponent(text)}`;
+  window.location.href = shareUrl;
 }
 
 function renderResults() {
   const result = calculateResults(state.questions, state.answers);
   root.innerHTML = `<main class="results-shell">
-    <section class="results-card" dir="rtl">
+    <section class="results-card result-summary" dir="rtl">
       ${logoMarkup()}
-      <span class="eyebrow">اكتمل الكوز</span>
-      <h1>أحسنت، ${esc(state.studentName)}.</h1>
-      <p class="result-sub">هذه تفاصيل نتيجتك في اختبار المفردات.</p>
-      <div class="score-block"><strong>${result.correct}<span>/ ${result.total}</span></strong><em>${result.percentage}%</em></div>
-      <div class="stats">
-        <div><span>الإجابات الصحيحة</span><strong>${result.correct}</strong></div>
-        <div><span>الإجابات الخاطئة</span><strong>${result.incorrect}</strong></div>
-        <div><span>مجموع الأسئلة</span><strong>${result.total}</strong></div>
-        ${quizConfig.showTimeTakenOnResults ? `<div><span>الوقت المستغرق</span><strong dir="ltr">${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
+      <div class="result-student">
+        <span>اسم الطالب</span>
+        <h1>${esc(state.studentName)}</h1>
       </div>
-      <div class="result-actions">
-        <button id="telegram-share-btn" class="telegram-share-btn" type="button">مشاركة النتيجة عبر تيليجرام <span aria-hidden="true">↗</span></button>
-        <button id="restart-btn" class="primary-btn">إعادة الكوز <span aria-hidden="true">↻</span></button>
+      <div class="result-score-main">
+        <span>النتيجة</span>
+        <strong>${result.correct}<small>/ ${result.total}</small></strong>
+      </div>
+      <div class="stats result-stats">
+        <div><span>الإجابات الصحيحة</span><strong>${result.correct}</strong></div>
+        <div><span>الأخطاء</span><strong>${result.incorrect}</strong></div>
+        ${quizConfig.showTimeTakenOnResults ? `<div><span>الوقت المستغرق</span><strong dir="ltr">${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
       </div>
     </section>
     ${reviewMarkup()}
+    <section class="result-final-actions" dir="rtl" aria-label="خيارات النتيجة">
+      <button id="telegram-share-btn" class="telegram-share-btn" type="button">مشاركة النتيجة عبر تيليجرام <span aria-hidden="true">↗</span></button>
+      <button id="restart-btn" class="secondary-btn restart-result-btn" type="button">إعادة الكوز <span aria-hidden="true">↻</span></button>
+    </section>
   </main>`;
   document.querySelector("#restart-btn").addEventListener("click", restart);
   document.querySelector("#telegram-share-btn")?.addEventListener("click", shareResultOnTelegram);
