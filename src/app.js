@@ -389,7 +389,7 @@ function shareResultOnTelegram() {
 
   // Open Telegram's native share composer so the student chooses a chat
   // and the result text is already prepared for sending.
-  const telegramShare = `tg://msg_url?url=&text=${encodeURIComponent(text)}`;
+  const telegramShare = `tg://msg_url?url=${encodeURIComponent("MEMGO ENGLISH")}&text=${encodeURIComponent(text)}`;
   window.location.href = telegramShare;
 }
 
