@@ -58,7 +58,12 @@ function restore() {
     const images = order.map(imgId => q.images.find(i => i.id === imgId)).filter(Boolean);
     return { ...q, images: images.length === q.images.length ? images : [...q.images] };
   });
-  state = { ...state, status:"active", studentName:saved.studentName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime, introNoticeSeen:true };
+  const restoredName = String(saved.studentName || "").trim().replace(/\s+/g, " ");
+  if (!restoredName) {
+    clearSession(quizConfig.storageKey);
+    return;
+  }
+  state = { ...state, status:"active", studentName:restoredName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime, introNoticeSeen:true };
 }
 
 function transitionRender(afterRender) {
@@ -85,6 +90,12 @@ function render() {
   document.title = "Visual Vocabulary Quiz | MEMGO ENGLISH";
   if (!validation.ok) return renderUnavailable(validation.reason);
   if (state.status === "intro") return renderIntro();
+  if (state.status === "active" && !String(state.studentName || "").trim()) {
+    clearSession(quizConfig.storageKey);
+    state.status = "intro";
+    state.studentName = "";
+    return renderIntro("يرجى كتابة اسم الطالب قبل بدء الكوز.");
+  }
   if (state.status === "active") return renderQuiz();
   return renderResults();
 }
@@ -200,7 +211,10 @@ function renderQuiz() {
         <div id="feedback" class="feedback" aria-live="polite">${feedbackMarkup(q)}</div>
         <div class="question-actions">
           <span class="selection-hint">${answered ? "تم تسجيل إجابتك" : "اختر صورة للمتابعة"}</span>
-          <button id="next-btn" class="primary-btn next-btn" ${answered && !state.locked ? "" : "disabled"}>${state.currentQuestionIndex === total - 1 ? "Finish quiz" : "Next question"} <span aria-hidden="true">→</span></button>
+          <div class="question-action-buttons">
+            <button id="end-quiz-btn" class="end-quiz-btn" type="button">إنهاء الكوز</button>
+            <button id="next-btn" class="primary-btn next-btn" ${answered && !state.locked ? "" : "disabled"}>${state.currentQuestionIndex === total - 1 ? "إنهاء وإظهار النتيجة" : "السؤال التالي"} <span aria-hidden="true">←</span></button>
+          </div>
         </div>
       </article>
     </section>
@@ -208,6 +222,7 @@ function renderQuiz() {
   document.querySelectorAll(".image-choice").forEach(btn => btn.addEventListener("click", () => selectAnswer(q.id, btn.dataset.imageId)));
   document.querySelector(".speak-btn")?.addEventListener("click", event => speakWord(event.currentTarget.dataset.word, event.currentTarget));
   document.querySelector("#next-btn").addEventListener("click", nextQuestion);
+  document.querySelector("#end-quiz-btn")?.addEventListener("click", showEndQuizConfirm);
   preloadNext();
 }
 
@@ -274,6 +289,33 @@ function feedbackMarkup(q) {
   return state.practiceFeedback === "correct"
     ? '<span class="feedback-icon">✓</span><strong>إجابة صحيحة.</strong> أحسنت، هذه الصورة تطابق معنى الكلمة في سياق الجملة.'
     : '<span class="feedback-icon">!</span><strong>إجابة غير صحيحة.</strong> تم تسجيل اختيارك، والصورة الصحيحة محددة باللون الأخضر.';
+}
+
+function showEndQuizConfirm() {
+  if (document.querySelector(".end-quiz-dialog")) return;
+  const overlay = document.createElement("div");
+  overlay.className = "end-quiz-dialog";
+  overlay.innerHTML = `<div class="end-quiz-modal" role="dialog" aria-modal="true" aria-labelledby="end-quiz-title" dir="rtl">
+    <h2 id="end-quiz-title">إنهاء الكوز؟</h2>
+    <p>سيتم إنهاء المحاولة الآن، وأي أسئلة لم تُجب عنها ستُحتسب ضمن النتيجة كإجابات غير صحيحة.</p>
+    <div class="end-quiz-modal-actions">
+      <button type="button" class="secondary-btn" id="cancel-end-quiz">متابعة الكوز</button>
+      <button type="button" class="end-quiz-confirm" id="confirm-end-quiz">نعم، إنهاء الكوز</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
+  overlay.querySelector("#cancel-end-quiz").addEventListener("click", close);
+  overlay.querySelector("#confirm-end-quiz").addEventListener("click", () => {
+    state.status = "complete";
+    state.completedTime = new Date().toISOString();
+    state.locked = true;
+    clearSession(quizConfig.storageKey);
+    overlay.remove();
+    transitionRender(() => window.scrollTo({ top:0, behavior:"auto" }));
+  });
+  overlay.querySelector("#cancel-end-quiz").focus();
 }
 
 function nextQuestion() {
