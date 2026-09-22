@@ -384,23 +384,13 @@ function resultShareText() {
   ].join("\n");
 }
 
-async function shareResultOnTelegram() {
+function shareResultOnTelegram() {
   const text = resultShareText();
 
-  // On phones, use the native share sheet so Telegram opens as an installed app
-  // instead of sending the student to Telegram's website.
-  if (navigator.share) {
-    try {
-      await navigator.share({ text });
-      return;
-    } catch (error) {
-      if (error?.name === "AbortError") return;
-    }
-  }
-
-  // Fallback for browsers/devices without Web Share support.
-  // tg:// asks the operating system to hand the action to the Telegram app.
-  window.location.href = `tg://msg?text=${encodeURIComponent(text)}`;
+  // Open Telegram's native share composer so the student chooses a chat
+  // and the result text is already prepared for sending.
+  const telegramShare = `tg://msg_url?url=&text=${encodeURIComponent(text)}`;
+  window.location.href = telegramShare;
 }
 
 function renderResults() {
