@@ -50,3 +50,47 @@
 .image-choice.answer-correct .choice-indicator{background:#2f8f5b;color:#fff;border-color:#2f8f5b}
 .image-choice.answer-incorrect{border-color:#c94b4b;box-shadow:0 0 0 3px rgba(201,75,75,.16)}
 .image-choice.answer-incorrect .choice-indicator{background:#c94b4b;color:#fff;border-color:#c94b4b}
+
+/* Mobile-first quiz refinements */
+html,body,#app{width:100%;max-width:100%;overflow-x:hidden}
+button,input{font:inherit}
+.image-choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+@media(max-width:700px){
+  .quiz-page{min-height:100svh}
+  .quiz-header{min-height:68px;padding:10px 16px;gap:12px}
+  .quiz-header .brand-logo{width:108px;height:auto}
+  .student-chip{max-width:48%;padding:8px 10px}
+  .student-chip strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .quiz-content{width:100%;padding:20px 12px 36px}
+  .progress-row{font-size:12px}
+  .question-card{padding:22px 14px;border-radius:20px}
+  .target-word{font-size:clamp(34px,11vw,48px);overflow-wrap:anywhere}
+  .sentence{font-size:16px;line-height:1.7;overflow-wrap:anywhere}
+  .choice-heading{gap:10px}
+  .choice-heading h2{font-size:16px}
+  .image-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .image-choice{min-width:0;border-radius:14px}
+  .image-frame{aspect-ratio:1/1}
+  .choice-indicator{width:28px;height:28px;right:9px;top:9px}
+  .feedback{font-size:13px;line-height:1.45}
+  .question-actions{flex-direction:column;align-items:stretch;gap:10px;margin-top:20px}
+  .selection-hint{text-align:center}
+  .next-btn{width:100%;min-height:54px}
+  .results-shell{padding:18px 12px 32px}
+  .results-card{padding:28px 18px;border-radius:20px}
+  .results-card>.eyebrow{margin-top:34px}
+  .score-block{margin:30px 0 20px;gap:12px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .review-section{margin:32px auto}
+  .review-card{padding:18px 14px;gap:20px}
+}
+@media(max-width:390px){
+  .intro-shell{padding:0;background:#fff}
+  .intro-card{min-height:100svh;width:100%;border:0;border-radius:0;box-shadow:none;padding:28px 18px}
+  .intro-card .brand-logo{width:150px}
+  .intro-copy h1{font-size:30px}
+  .intro-copy p{font-size:14px}
+  .image-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .score-block strong{font-size:38px}
+}
