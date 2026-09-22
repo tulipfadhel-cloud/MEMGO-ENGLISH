@@ -141,7 +141,7 @@ button,input{font:inherit}
 .quiz-notice-card p{margin:0 auto;max-width:430px;color:#566276;line-height:1.85;font-size:14px}
 .quiz-notice-card p strong{color:#27364e}
 .notice-loading{height:3px;margin:28px auto 0;max-width:220px;overflow:hidden;border-radius:999px;background:#edf2fa}
-.notice-loading span{display:block;width:100%;height:100%;background:#9CBDFD;transform-origin:right;animation:noticeTimer 2.6s linear forwards}
+.notice-loading span{display:block;width:100%;height:100%;background:#9CBDFD;transform-origin:right;animation:noticeTimer 5s linear forwards}
 @keyframes noticeTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 @media(max-width:540px){.quiz-notice-screen{padding:16px}.quiz-notice-card{padding:34px 20px;border-radius:22px}.quiz-notice-card h1{font-size:25px}.quiz-notice-card p{font-size:13.5px}}
 @media(prefers-reduced-motion:reduce){.notice-loading span{animation:none}}
