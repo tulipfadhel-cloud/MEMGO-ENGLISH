@@ -319,34 +319,27 @@ function renderResults() {
         ${quizConfig.showTimeTakenOnResults ? `<div><span>الوقت المستغرق</span><strong dir="ltr">${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
       </div>
       <div class="result-actions">
-        ${quizConfig.enableReview ? '<button id="review-btn" class="secondary-btn">تفاصيل الإجابات</button>' : ""}
         <button id="restart-btn" class="primary-btn">إعادة الكوز <span aria-hidden="true">↻</span></button>
       </div>
     </section>
-    ${state.reviewOpen ? reviewMarkup() : ""}
+    ${reviewMarkup()}
   </main>`;
   document.querySelector("#restart-btn").addEventListener("click", restart);
-  document.querySelector("#review-btn")?.addEventListener("click", () => {
-    state.reviewOpen = !state.reviewOpen;
-    renderResults();
-    wireImages();
-    if (state.reviewOpen) requestAnimationFrame(() => document.querySelector(".review-section")?.scrollIntoView({ behavior:"smooth", block:"start" }));
-  });
   wireImages();
 }
 
 function reviewMarkup() {
+  const incorrectQuestions = state.questions.map((q,i) => ({q,i})).filter(({q}) => state.answers[q.id] !== q.correctImageId);
+  if (!incorrectQuestions.length) {
+    return `<section class="review-section" dir="rtl"><div class="review-title"><span class="eyebrow">مراجعة الإجابات</span><h2>لا توجد أخطاء 🎉</h2><p>جميع إجاباتك صحيحة.</p></div></section>`;
+  }
   return `<section class="review-section" dir="rtl">
-    <div class="review-title"><span class="eyebrow">مراجعة الإجابات</span><h2>تفاصيل إجاباتك</h2><p>يمكنك مراجعة كل سؤال ومعرفة اختيارك والصورة الصحيحة.</p></div>
-    <div class="review-list">${state.questions.map((q,i) => {
-      const selectedId = state.answers[q.id];
-      const selected = q.images.find(img => img.id === selectedId);
+    <div class="review-title"><span class="eyebrow">مراجعة الأخطاء</span><h2>الأسئلة التي أخطأت بها</h2><p>راجع الكلمة والجملة، ثم شاهد الصورة الصحيحة.</p></div>
+    <div class="review-list">${incorrectQuestions.map(({q,i}) => {
       const correct = q.images.find(img => img.id === q.correctImageId);
-      const isCorrect = selectedId === q.correctImageId;
-      return `<article class="review-card ${isCorrect ? "review-correct" : "review-incorrect"}">
-        <div class="review-copy"><span>السؤال ${i+1}</span><h3 dir="ltr">${esc(q.word)}</h3><p dir="ltr">${sentenceMarkup(q)}</p><div class="status ${isCorrect ? "is-correct" : "is-incorrect"}"><span aria-hidden="true">${isCorrect ? "✓" : "!"}</span>${isCorrect ? "إجابة صحيحة" : "إجابة خاطئة"}</div></div>
-        <div class="review-images">
-          <figure><figcaption>اختيارك</figcaption>${reviewImage(selected)}</figure>
+      return `<article class="review-card review-incorrect correct-only-review">
+        <div class="review-copy"><span>السؤال ${i+1}</span><h3 dir="ltr">${esc(q.word)}</h3><p dir="ltr">${sentenceMarkup(q)}</p><div class="status is-incorrect"><span aria-hidden="true">!</span>إجابة خاطئة</div></div>
+        <div class="review-images single-review-image">
           <figure><figcaption>الإجابة الصحيحة</figcaption>${reviewImage(correct)}</figure>
         </div>
       </article>`;
@@ -354,8 +347,8 @@ function reviewMarkup() {
 }
 
 function reviewImage(img) {
-  if (!img) return '<div class="review-placeholder">لا توجد إجابة</div>';
-  return `<div class="review-image"><img src="${esc(img.src)}" alt="${esc(img.alt || "صورة الإجابة")}" loading="lazy"><span class="broken-placeholder">الصورة غير متاحة</span></div>`;
+  if (!img) return '<div class="review-placeholder">الصورة غير متاحة</div>';
+  return `<div class="review-image"><img src="${esc(img.src)}" alt="${esc(img.alt || "صورة الإجابة الصحيحة")}" loading="lazy"><span class="broken-placeholder">الصورة غير متاحة</span></div>`;
 }
 
 function restart() {
