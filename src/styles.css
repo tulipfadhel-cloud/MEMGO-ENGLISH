@@ -101,3 +101,12 @@ button,input{font:inherit}
 .answer-notice strong{color:#25334b}
 .answer-notice-icon{flex:0 0 22px;width:22px;height:22px;border:1px solid #7e9fdc;border-radius:50%;display:grid;place-items:center;color:#315fba;font-size:12px;font-weight:900}
 @media(max-width:700px){.answer-notice{margin:12px 0 16px;padding:11px 12px;font-size:12.5px}}
+
+/* Word pronunciation */
+.word-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.word-row .target-word{margin-right:0}
+.speak-btn{width:44px;height:44px;flex:0 0 44px;border:1px solid #cbdaf5;border-radius:50%;background:#f4f8ff;display:grid;place-items:center;cursor:pointer;font-size:19px;transition:transform .16s ease,background .16s ease,border-color .16s ease}
+.speak-btn:hover{background:#eaf2ff;border-color:#9CBDFD;transform:translateY(-1px)}
+.speak-btn:focus-visible{outline:3px solid rgba(156,189,253,.5);outline-offset:2px}
+.speak-btn.speaking{background:#dfeaff;border-color:#7da4ed;transform:scale(.96)}
+@media(max-width:700px){.word-row{gap:9px}.speak-btn{width:42px;height:42px;flex-basis:42px;font-size:18px}}
