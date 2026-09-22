@@ -169,3 +169,9 @@ button,input{font:inherit}
   .quiz-header .student-chip span{font-size:10px}
   .quiz-header .student-chip strong{font-size:11px}
 }
+
+/* Direct incorrect-answer review */
+.correct-only-review{grid-template-columns:minmax(0,1fr) minmax(180px,320px);align-items:center}
+.single-review-image{display:block}
+.single-review-image figure{width:100%}
+@media(max-width:700px){.correct-only-review{grid-template-columns:1fr}.single-review-image{width:min(100%,360px);margin:0 auto}}
