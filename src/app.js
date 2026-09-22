@@ -369,24 +369,8 @@ function resultShareText() {
 
 function shareResultOnTelegram() {
   const text = resultShareText();
-  const encoded = encodeURIComponent(text);
-  const appUrl = `tg://msg?text=${encoded}`;
-  const webUrl = `https://t.me/share/url?text=${encoded}`;
-  let fallbackTimer = null;
-
-  const cancelFallback = () => {
-    if (document.hidden && fallbackTimer) {
-      window.clearTimeout(fallbackTimer);
-      fallbackTimer = null;
-    }
-  };
-
-  document.addEventListener("visibilitychange", cancelFallback, { once: true });
-  window.location.href = appUrl;
-
-  fallbackTimer = window.setTimeout(() => {
-    if (!document.hidden) window.location.href = webUrl;
-  }, 1400);
+  const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(text)}`;
+  window.open(shareUrl, "_blank", "noopener,noreferrer");
 }
 
 function renderResults() {
