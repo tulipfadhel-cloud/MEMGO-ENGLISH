@@ -16,7 +16,8 @@ let state = {
   completedTime: null,
   locked: false,
   practiceFeedback: null,
-  reviewOpen: false
+  reviewOpen: false,
+  introNoticeSeen: false
 };
 
 function esc(value) {
@@ -57,7 +58,7 @@ function restore() {
     const images = order.map(imgId => q.images.find(i => i.id === imgId)).filter(Boolean);
     return { ...q, images: images.length === q.images.length ? images : [...q.images] };
   });
-  state = { ...state, status:"active", studentName:saved.studentName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime };
+  state = { ...state, status:"active", studentName:saved.studentName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime, introNoticeSeen:true };
 }
 
 function transitionRender(afterRender) {
@@ -121,7 +122,7 @@ function startQuiz(event) {
     document.querySelector("#student-name").focus();
     return;
   }
-  state = { ...state, status:"active", studentName:name.slice(0,quizConfig.maxNameLength), questions:prepareQuestions(quizData, quizConfig), currentQuestionIndex:0, answers:{}, startTime:new Date().toISOString(), completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false };
+  state = { ...state, status:"active", studentName:name.slice(0,quizConfig.maxNameLength), questions:prepareQuestions(quizData, quizConfig), currentQuestionIndex:0, answers:{}, startTime:new Date().toISOString(), completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false, introNoticeSeen:false };
   persist();
   transitionRender(() => window.scrollTo({ top:0, behavior:"smooth" }));
 }
@@ -143,7 +144,27 @@ function formatTimeTaken(startTime, completedTime) {
   return `${seconds}s`;
 }
 
+function renderQuizNotice() {
+  root.innerHTML = `<main class="quiz-notice-screen" dir="rtl">
+    <section class="quiz-notice-card" role="status">
+      ${logoMarkup()}
+      <div class="quiz-notice-symbol" aria-hidden="true">!</div>
+      <h1>قبل أن تبدأ</h1>
+      <p>اختر صورة واحدة فقط لكل سؤال. <strong>اختيارك الأول نهائي</strong> وسيُحتسب ضمن نتيجتك، لذلك تأكد من إجابتك قبل الضغط على الصورة.</p>
+      <div class="notice-loading" aria-hidden="true"><span></span></div>
+    </section>
+  </main>`;
+  window.setTimeout(() => {
+    state.introNoticeSeen = true;
+    transitionRender(() => window.scrollTo({ top:0, behavior:"auto" }));
+  }, 2600);
+}
+
 function renderQuiz() {
+  if (!state.introNoticeSeen && state.currentQuestionIndex === 0) {
+    renderQuizNotice();
+    return;
+  }
   const q = state.questions[state.currentQuestionIndex];
   const total = state.questions.length;
   const answered = Boolean(state.answers[q.id]);
@@ -167,10 +188,7 @@ function renderQuiz() {
         <p class="sentence">${sentenceMarkup(q)}</p>
         <div class="divider"></div>
         <div class="choice-heading" dir="rtl"><h2>اختر الصورة الأنسب</h2><span>اختر إجابة واحدة فقط</span></div>
-        <div class="answer-notice" role="note" dir="rtl">
-          <span class="answer-notice-icon" aria-hidden="true">!</span>
-          <p><strong>انتبه قبل الاختيار:</strong> يمكنك اختيار صورة واحدة فقط. اختيارك الأول نهائي وسيُحتسب ضمن نتيجتك، لذلك تأكد من إجابتك قبل الضغط على الصورة.</p>
-        </div>
+        
         <div class="image-grid" role="radiogroup" aria-label="Image answers">
           ${q.images.map((img, idx) => imageChoice(q, img, idx)).join("")}
         </div>
@@ -338,7 +356,7 @@ function reviewImage(img) {
 
 function restart() {
   clearSession(quizConfig.storageKey);
-  state = { status:"intro", studentName:state.studentName, questions:[], currentQuestionIndex:0, answers:{}, startTime:null, completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false };
+  state = { status:"intro", studentName:state.studentName, questions:[], currentQuestionIndex:0, answers:{}, startTime:null, completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false, introNoticeSeen:false };
   transitionRender(() => document.querySelector("#student-name")?.focus());
 }
 
