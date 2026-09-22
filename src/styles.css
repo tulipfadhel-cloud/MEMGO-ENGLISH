@@ -110,3 +110,10 @@ button,input{font:inherit}
 .speak-btn:focus-visible{outline:3px solid rgba(156,189,253,.5);outline-offset:2px}
 .speak-btn.speaking{background:#dfeaff;border-color:#7da4ed;transform:scale(.96)}
 @media(max-width:700px){.word-row{gap:9px}.speak-btn{width:42px;height:42px;flex-basis:42px;font-size:18px}}
+
+/* Coordinated screen transitions */
+#app>main{opacity:1;transform:translateY(0);transition:opacity .18s ease,transform .18s ease}
+#app>main.page-leaving{opacity:0;transform:translateY(7px);pointer-events:none}
+#app>main.page-entering{opacity:0;transform:translateY(7px)}
+.question-card{transition:opacity .18s ease,transform .18s ease,box-shadow .2s ease}
+@media(prefers-reduced-motion:reduce){#app>main,.question-card{transition:none!important;transform:none!important}}
