@@ -162,6 +162,9 @@ function formatTimeTaken(startTime, completedTime) {
 }
 
 function renderQuizNotice() {
+  // Use the 5-second instruction screen to warm the browser cache.
+  // Preload all small optimized WebP assets once so questions appear instantly.
+  preloadQuizImages();
   root.innerHTML = `<main class="quiz-notice-screen" dir="rtl">
     <section class="quiz-notice-card" role="status">
       ${logoMarkup()}
@@ -365,10 +368,33 @@ function nextQuestion() {
   transitionRender(() => window.scrollTo({ top:0, behavior:"smooth" }));
 }
 
-function preloadNext() {
+const preloadedQuizSources = new Set();
+
+function preloadQuizImages() {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const saveData = Boolean(connection?.saveData);
+  const current = state.questions[state.currentQuestionIndex];
   const next = state.questions[state.currentQuestionIndex + 1];
-  if (!next) return;
-  next.images.forEach(item => { const img = new Image(); img.src = item.src; });
+
+  // Current + next question get highest priority. With optimized WebP files,
+  // the remaining unique assets can warm in the background during the notice.
+  const priorityQuestions = [current, next].filter(Boolean);
+  const backgroundQuestions = saveData ? [] : state.questions;
+
+  [...priorityQuestions, ...backgroundQuestions].forEach(question => {
+    question.images.forEach(item => {
+      if (preloadedQuizSources.has(item.src)) return;
+      preloadedQuizSources.add(item.src);
+      const img = new Image();
+      img.decoding = "async";
+      img.fetchPriority = priorityQuestions.includes(question) ? "high" : "low";
+      img.src = item.src;
+    });
+  });
+}
+
+function preloadNext() {
+  preloadQuizImages();
   wireImages();
 }
 
