@@ -355,6 +355,24 @@ function preloadNext() {
   wireImages();
 }
 
+function resultShareText() {
+  const result = calculateResults(state.questions, state.answers);
+  const failedWords = state.questions.filter(q => state.answers[q.id] !== q.correctImageId).map(q => q.word);
+  return [
+    "MEMGO ENGLISH — نتيجة الكوز",
+    "",
+    `اسم الطالب: ${state.studentName}`,
+    `الدرجة: ${result.correct}/${result.total} (${result.percentage}%)`,
+    `الكلمات التي أخفق بها: ${failedWords.length ? failedWords.join("، ") : "لا توجد — جميع الإجابات صحيحة"}`
+  ].join("\n");
+}
+
+function shareResultOnTelegram() {
+  const text = resultShareText();
+  const url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
 function renderResults() {
   const result = calculateResults(state.questions, state.answers);
   root.innerHTML = `<main class="results-shell">
@@ -371,12 +389,14 @@ function renderResults() {
         ${quizConfig.showTimeTakenOnResults ? `<div><span>الوقت المستغرق</span><strong dir="ltr">${formatTimeTaken(state.startTime, state.completedTime)}</strong></div>` : ""}
       </div>
       <div class="result-actions">
+        <button id="telegram-share-btn" class="telegram-share-btn" type="button">مشاركة النتيجة عبر تيليجرام <span aria-hidden="true">↗</span></button>
         <button id="restart-btn" class="primary-btn">إعادة الكوز <span aria-hidden="true">↻</span></button>
       </div>
     </section>
     ${reviewMarkup()}
   </main>`;
   document.querySelector("#restart-btn").addEventListener("click", restart);
+  document.querySelector("#telegram-share-btn")?.addEventListener("click", shareResultOnTelegram);
   wireImages();
 }
 
