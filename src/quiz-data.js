@@ -3,16 +3,16 @@
 // Correctness is always determined by correctImageId, never by visual position.
 
 const imageAssets = Object.freeze({
-  appropriate: "./assets/questions/appropriate.webp",
-  avoid: "./assets/questions/avoid.webp",
-  behave: "./assets/questions/behave.webp",
-  calm: "./assets/questions/calm.webp",
-  concern: "./assets/questions/concern.webp",
-  content: "./assets/questions/content.webp",
-  expect: "./assets/questions/expect.webp",
-  frequently: "./assets/questions/frequently.webp",
-  habit: "./assets/questions/habit.webp",
-  instruct: "./assets/questions/instruct.webp"
+  appropriate: "./assets/questions/appropriate.png",
+  avoid: "./assets/questions/avoid.png",
+  behave: "./assets/questions/behave.png",
+  calm: "./assets/questions/calm.jpeg",
+  concern: "./assets/questions/concern.jpeg",
+  content: "./assets/questions/content.png",
+  expect: "./assets/questions/expect.png",
+  frequently: "./assets/questions/frequently.png",
+  habit: "./assets/questions/habit.png",
+  instruct: "./assets/questions/instruct.png"
 });
 
 const image = (id, key, alt) => Object.freeze({
