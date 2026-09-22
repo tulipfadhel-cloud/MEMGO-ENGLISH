@@ -141,7 +141,7 @@ function renderQuiz() {
         <h1 class="target-word">${esc(q.word)}</h1>
         <p class="sentence">${sentenceMarkup(q)}</p>
         <div class="divider"></div>
-        <div class="choice-heading"><h2>Choose the best image</h2><span>Select one answer</span></div>
+        <div class="choice-heading" dir="rtl"><h2>اختر الصورة الأنسب</h2><span>اختر إجابة واحدة فقط</span></div>
         <div class="answer-notice" role="note">
           <span class="answer-notice-icon" aria-hidden="true">!</span>
           <p><strong>Choose carefully.</strong> You can select only one image. Your first choice is final and will be counted in your score.</p>
@@ -151,7 +151,7 @@ function renderQuiz() {
         </div>
         <div id="feedback" class="feedback" aria-live="polite">${feedbackMarkup(q)}</div>
         <div class="question-actions">
-          <span class="selection-hint">${answered ? "Answer selected" : "Select an image to continue"}</span>
+          <span class="selection-hint">${answered ? "تم تسجيل إجابتك" : "اختر صورة للمتابعة"}</span>
           <button id="next-btn" class="primary-btn next-btn" ${answered && !state.locked ? "" : "disabled"}>${state.currentQuestionIndex === total - 1 ? "Finish quiz" : "Next question"} <span aria-hidden="true">→</span></button>
         </div>
       </article>
@@ -208,8 +208,8 @@ function selectAnswer(questionId, imageId) {
 function feedbackMarkup(q) {
   if (quizConfig.mode !== "practice" || !state.practiceFeedback || !state.answers[q.id]) return "";
   return state.practiceFeedback === "correct"
-    ? '<span class="feedback-icon">✓</span><strong>Correct.</strong> That image matches the word in context.'
-    : '<span class="feedback-icon">!</span><strong>Not quite.</strong> You can continue and review your answer later.';
+    ? '<span class="feedback-icon">✓</span><strong>إجابة صحيحة.</strong> أحسنت، هذه الصورة تطابق معنى الكلمة في سياق الجملة.'
+    : '<span class="feedback-icon">!</span><strong>إجابة غير صحيحة.</strong> تم تسجيل اختيارك، والصورة الصحيحة محددة باللون الأخضر.';
 }
 
 function nextQuestion() {
