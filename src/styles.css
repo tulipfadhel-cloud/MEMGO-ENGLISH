@@ -328,3 +328,28 @@ button,input{font:inherit}
   }
   .quiz-header .student-chip strong{max-width:110px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 }
+
+
+/* Smooth image reveal: keep the stable skeleton, then softly reveal decoded images. */
+.image-frame img{
+  opacity:0;
+  transform:scale(1.015);
+  filter:blur(5px);
+  transition:opacity .42s ease,transform .55s cubic-bezier(.2,.7,.2,1),filter .42s ease;
+  will-change:opacity,transform,filter;
+}
+.image-frame.loaded img{
+  opacity:1;
+  transform:scale(1);
+  filter:blur(0);
+}
+.image-frame.loaded .image-loader{
+  opacity:0;
+  visibility:hidden;
+  display:block;
+  transition:opacity .28s ease,visibility 0s linear .28s;
+}
+@media (prefers-reduced-motion:reduce){
+  .image-frame img{transition:opacity .12s linear;transform:none;filter:none}
+  .image-frame.loaded .image-loader{transition:none}
+}
