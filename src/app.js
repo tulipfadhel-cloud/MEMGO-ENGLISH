@@ -160,7 +160,11 @@ function renderQuiz() {
 
 function imageChoice(q, img, idx) {
   const selected = state.answers[q.id] === img.id;
-  return `<button type="button" class="image-choice ${selected ? "selected" : ""}" data-image-id="${esc(img.id)}" role="radio" aria-checked="${selected}" aria-label="Image option ${idx + 1}">
+  const feedbackVisible = quizConfig.mode === "practice" && Boolean(state.practiceFeedback);
+  const isCorrect = feedbackVisible && img.id === q.correctImageId;
+  const isWrongSelection = feedbackVisible && selected && img.id !== q.correctImageId;
+  const feedbackClass = isCorrect ? "answer-correct" : isWrongSelection ? "answer-incorrect" : "";
+  return `<button type="button" class="image-choice ${selected ? "selected" : ""} ${feedbackClass}" data-image-id="${esc(img.id)}" role="radio" aria-checked="${selected}" aria-label="Image option ${idx + 1}">
     <span class="image-frame">
       <span class="image-loader" aria-hidden="true"></span>
       <img src="${esc(img.src)}" alt="${esc(img.alt || `Visual answer option ${idx + 1}`)}" loading="${idx < 2 ? "eager" : "lazy"}" decoding="async">
@@ -185,6 +189,7 @@ function wireImages() {
 
 function selectAnswer(questionId, imageId) {
   if (state.locked) return;
+  if (quizConfig.mode === "practice" && state.answers[questionId]) return;
   state.answers = { ...state.answers, [questionId]: imageId };
   if (quizConfig.mode === "practice") {
     const q = state.questions[state.currentQuestionIndex];
