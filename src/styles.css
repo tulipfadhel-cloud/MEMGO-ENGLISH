@@ -190,3 +190,9 @@ button,input{font:inherit}
 .end-quiz-modal-actions button{min-height:46px;padding:0 16px}
 .end-quiz-confirm{flex:1}
 @media(max-width:700px){.question-action-buttons{width:100%;flex-direction:column-reverse}.question-action-buttons button{width:100%}.end-quiz-modal-actions{flex-direction:column}.end-quiz-modal-actions button{width:100%}}
+
+/* Telegram result sharing */
+.telegram-share-btn{min-height:50px;padding:0 18px;border:1px solid #9CBDFD;border-radius:12px;background:#f2f6ff;color:#315fba;font-weight:800;cursor:pointer;transition:background .16s ease,border-color .16s ease}
+.telegram-share-btn:hover{background:#e8f0ff;border-color:#82aaf7}
+.telegram-share-btn:focus-visible{outline:3px solid rgba(156,189,253,.35);outline-offset:2px}
+@media(max-width:700px){.result-actions .telegram-share-btn{width:100%}}
