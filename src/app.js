@@ -26,7 +26,7 @@ function esc(value) {
 
 function logoMarkup() {
   return `<div class="brand" aria-label="MEMGO ENGLISH">
-    <img class="brand-logo" src="./assets/branding/memgo-logo.jpg?v=2" alt="MEMGO ENGLISH logo">
+    <img class="brand-logo" src="./assets/branding/memgo-logo.webp?v=1" alt="MEMGO ENGLISH logo">
   </div>`;
 }
 
