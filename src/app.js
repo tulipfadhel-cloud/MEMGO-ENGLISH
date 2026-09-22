@@ -73,9 +73,9 @@ function renderIntro(error = "") {
     <section class="intro-card">
       ${logoMarkup()}
       <div class="intro-copy">
-        <span class="eyebrow">VISUAL VOCABULARY</span>
-        <h1>Understand words.<br><span>See the meaning.</span></h1>
-        <p>Read the sentence and choose the image that best represents the highlighted word.</p>
+        <span class="eyebrow">MEMGO ENGLISH</span>
+        <h1>Visual Vocabulary Quiz</h1>
+        <p>Read each sentence, understand the highlighted word in context, and choose the image that best matches its meaning.</p>
       </div>
       <form id="start-form" novalidate>
         <label for="student-name">Student name</label>
@@ -85,13 +85,8 @@ function renderIntro(error = "") {
         <p id="name-error" class="field-error" role="alert">${esc(error)}</p>
         <button class="primary-btn" type="submit">Start quiz <span aria-hidden="true">→</span></button>
       </form>
-      <p class="intro-note">Your progress is saved on this device during an active attempt.</p>
+      <p class="intro-note">Enter your name to begin the quiz.</p>
     </section>
-    <aside class="intro-aside" aria-hidden="true">
-      <div class="visual-card visual-one"><span>WORD</span><strong>Context</strong></div>
-      <div class="visual-card visual-two"><div class="mock-image"></div><div class="mock-image"></div></div>
-      <div class="aside-caption"><span>01</span><p>Learn through context and visual understanding.</p></div>
-    </aside>
   </main>`;
   document.querySelector("#start-form").addEventListener("submit", startQuiz);
 }
