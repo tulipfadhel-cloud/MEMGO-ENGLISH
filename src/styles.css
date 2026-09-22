@@ -298,3 +298,33 @@ button,input{font:inherit}
   .quiz-header .student-chip .student-label{font-size:10px}
   .quiz-header .student-chip strong{max-width:none;font-size:12px}
 }
+
+
+/* Header correction: brand left, student right on the same row */
+.quiz-header-inner{flex-wrap:nowrap!important}
+.quiz-brand-lockup{width:auto!important;flex:0 1 auto}
+.quiz-header .student-chip{
+  width:auto!important;
+  max-width:42%!important;
+  margin-top:0!important;
+  margin-inline-start:auto!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+}
+@media(max-width:700px){
+  .quiz-header-inner{flex-wrap:nowrap!important;gap:10px}
+  .quiz-brand-lockup{width:auto!important;min-width:0;flex:1 1 auto}
+  .quiz-header .student-chip{
+    width:auto!important;
+    max-width:42%!important;
+    margin:0 0 0 auto!important;
+    flex:0 1 auto;
+    min-height:44px;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    gap:3px!important;
+    padding:7px 9px!important;
+  }
+  .quiz-header .student-chip strong{max-width:110px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
