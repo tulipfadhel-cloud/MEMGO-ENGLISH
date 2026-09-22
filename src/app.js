@@ -190,9 +190,15 @@ function renderQuiz() {
   root.innerHTML = `<main class="quiz-page">
     <header class="quiz-header">
       <div class="quiz-header-inner">
-        ${logoMarkup()}
+        <div class="quiz-brand-lockup">
+          <div class="quiz-brand-mark">${logoMarkup()}</div>
+          <div class="quiz-brand-copy" aria-label="MEMGO ENGLISH">
+            <strong>MEMGO ENGLISH</strong>
+            <span>Visual Vocabulary Quiz</span>
+          </div>
+        </div>
         <div class="student-chip" dir="rtl" aria-label="اسم الطالب">
-          <span>الطالب:</span>
+          <span class="student-label">الطالب</span>
           <strong title="${esc(state.studentName)}">${esc(state.studentName)}</strong>
         </div>
       </div>
