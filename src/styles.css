@@ -112,9 +112,9 @@ button,input{font:inherit}
 @media(max-width:700px){.word-row{gap:9px}.speak-btn{width:42px;height:42px;flex-basis:42px;font-size:18px}}
 
 /* Coordinated screen transitions */
-#app>main{opacity:1;transform:translateY(0);transition:opacity .18s ease,transform .18s ease}
-#app>main.page-leaving{opacity:0;transform:translateY(7px);pointer-events:none}
-#app>main.page-entering{opacity:0;transform:translateY(7px)}
+#app>main{opacity:1;transform:translateY(0);transition:opacity .22s ease,transform .22s ease}
+#app>main.page-leaving{opacity:0;transform:translateY(-6px);pointer-events:none}
+#app>main.page-entering{opacity:0;transform:translateY(16px)}
 .question-card{transition:opacity .18s ease,transform .18s ease,box-shadow .2s ease}
 @media(prefers-reduced-motion:reduce){#app>main,.question-card{transition:none!important;transform:none!important}}
 
@@ -222,3 +222,8 @@ button,input{font:inherit}
   .result-stats>div:last-child:nth-child(3){grid-column:1/-1}
   .result-final-actions{grid-template-columns:1fr;padding:0 12px 30px}
 }
+
+/* Results enter from the top instead of appearing from the middle */
+.results-shell{justify-content:flex-start!important;min-height:100svh;padding-top:28px}
+.results-shell.page-entering{transform:translateY(18px)}
+@media(max-width:700px){.results-shell{padding-top:14px}}
