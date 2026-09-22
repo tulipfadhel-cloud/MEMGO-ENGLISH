@@ -3,6 +3,7 @@ export const quizConfig = Object.freeze({
   randomizeQuestions: true,
   randomizeAnswers: true,
   enableReview: true,
+  showTimeTakenOnResults: true,
   persistSession: true,
   maxNameLength: 60,
   minImageOptions: 2,
