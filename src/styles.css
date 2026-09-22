@@ -145,3 +145,27 @@ button,input{font:inherit}
 @keyframes noticeTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 @media(max-width:540px){.quiz-notice-screen{padding:16px}.quiz-notice-card{padding:34px 20px;border-radius:22px}.quiz-notice-card h1{font-size:25px}.quiz-notice-card p{font-size:13.5px}}
 @media(prefers-reduced-motion:reduce){.notice-loading span{animation:none}}
+
+/* Refined quiz header */
+.quiz-header{width:100%;padding:12px 24px;background:rgba(255,255,255,.96);border-bottom:1px solid #e8edf5}
+.quiz-header-inner{width:min(1120px,100%);min-height:58px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.quiz-header .brand{display:flex;align-items:center;flex:0 0 auto}
+.quiz-header .brand-logo{display:block;width:126px;height:auto;object-fit:contain}
+.quiz-header .student-chip{min-width:0;max-width:50%;display:flex;align-items:center;gap:7px;padding:9px 13px;border:1px solid #dce6f6;border-radius:12px;background:#f7f9fd;color:#566276;line-height:1.2}
+.quiz-header .student-chip span{font-size:12px;white-space:nowrap}
+.quiz-header .student-chip strong{min-width:0;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#202c40}
+@media(max-width:700px){
+  .quiz-header{padding:9px 14px}
+  .quiz-header-inner{min-height:54px;gap:12px}
+  .quiz-header .brand-logo{width:104px}
+  .quiz-header .student-chip{max-width:58%;padding:8px 10px;gap:5px}
+  .quiz-header .student-chip span{display:inline;font-size:11px}
+  .quiz-header .student-chip strong{font-size:12px;max-width:150px}
+}
+@media(max-width:370px){
+  .quiz-header{padding-inline:10px}
+  .quiz-header .brand-logo{width:92px}
+  .quiz-header .student-chip{max-width:62%;padding:7px 8px}
+  .quiz-header .student-chip span{font-size:10px}
+  .quiz-header .student-chip strong{font-size:11px}
+}
