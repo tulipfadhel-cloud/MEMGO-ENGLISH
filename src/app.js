@@ -93,20 +93,20 @@ function renderIntro(error = "") {
   root.innerHTML = `<main class="shell intro-shell">
     <section class="intro-card">
       ${logoMarkup()}
-      <div class="intro-copy">
+      <div class="intro-copy" dir="rtl">
         <span class="eyebrow">MEMGO ENGLISH</span>
-        <h1>Visual Vocabulary Quiz</h1>
-        <p>Read each sentence, understand the highlighted word in context, and choose the image that best matches its meaning.</p>
+        <h1>اختبار المفردات بالصور</h1>
+        <p>اقرأ الجملة، افهم معنى الكلمة المحددة من السياق، ثم اختر الصورة التي تعبّر عن معناها بشكل صحيح.</p>
       </div>
-      <form id="start-form" novalidate>
-        <label for="student-name">Student name</label>
+      <form id="start-form" novalidate dir="rtl">
+        <label for="student-name">اسم الطالب</label>
         <div class="input-wrap">
-          <input id="student-name" name="studentName" type="text" autocomplete="name" maxlength="${quizConfig.maxNameLength}" placeholder="Enter your name" value="${esc(state.studentName)}" aria-describedby="name-error" ${error ? 'aria-invalid="true"' : ""}/>
+          <input id="student-name" name="studentName" type="text" autocomplete="name" maxlength="${quizConfig.maxNameLength}" placeholder="اكتب اسمك هنا" value="${esc(state.studentName)}" aria-describedby="name-error" ${error ? 'aria-invalid="true"' : ""}/>
         </div>
         <p id="name-error" class="field-error" role="alert">${esc(error)}</p>
-        <button class="primary-btn" type="submit">Start quiz <span aria-hidden="true">→</span></button>
+        <button class="primary-btn" type="submit">ابدأ الكوز <span aria-hidden="true">←</span></button>
       </form>
-      <p class="intro-note">Enter your name to begin the quiz.</p>
+      <p class="intro-note" dir="rtl">اكتب اسمك للبدء.</p>
     </section>
   </main>`;
   document.querySelector("#start-form").addEventListener("submit", startQuiz);
@@ -118,7 +118,7 @@ function startQuiz(event) {
   const name = input.value.trim().replace(/\s+/g, " ");
   if (!name) {
     state.studentName = input.value;
-    renderIntro("Please enter your name to begin.");
+    renderIntro("يرجى كتابة اسمك للبدء.");
     document.querySelector("#student-name").focus();
     return;
   }
