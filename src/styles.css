@@ -227,3 +227,8 @@ button,input{font:inherit}
 .results-shell{justify-content:flex-start!important;min-height:100svh;padding-top:28px}
 .results-shell.page-entering{transform:translateY(18px)}
 @media(max-width:700px){.results-shell{padding-top:14px}}
+
+/* MEMGO ENGLISH provider credit */
+.provider-line{margin:0 0 10px!important;color:#66758c!important;font-size:13px!important;line-height:1.5!important}
+.provider-line strong,.notice-provider strong{color:#315fba}
+.notice-provider{margin:0 auto 10px!important;color:#66758c!important;font-size:12px!important}
