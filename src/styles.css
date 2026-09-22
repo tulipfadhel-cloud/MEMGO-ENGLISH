@@ -44,3 +44,9 @@
   mix-blend-mode:multiply;
   background:transparent;
 }
+
+/* Immediate answer feedback */
+.image-choice.answer-correct{border-color:#2f8f5b;box-shadow:0 0 0 3px rgba(47,143,91,.18)}
+.image-choice.answer-correct .choice-indicator{background:#2f8f5b;color:#fff;border-color:#2f8f5b}
+.image-choice.answer-incorrect{border-color:#c94b4b;box-shadow:0 0 0 3px rgba(201,75,75,.16)}
+.image-choice.answer-incorrect .choice-indicator{background:#c94b4b;color:#fff;border-color:#c94b4b}
