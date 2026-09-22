@@ -168,7 +168,7 @@ function renderQuizNotice() {
   window.setTimeout(() => {
     state.introNoticeSeen = true;
     transitionRender(() => window.scrollTo({ top:0, behavior:"auto" }));
-  }, 2600);
+  }, 5000);
 }
 
 function renderQuiz() {
@@ -308,11 +308,21 @@ function showEndQuizConfirm() {
   overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
   overlay.querySelector("#cancel-end-quiz").addEventListener("click", close);
   overlay.querySelector("#confirm-end-quiz").addEventListener("click", () => {
-    state.status = "complete";
-    state.completedTime = new Date().toISOString();
-    state.locked = true;
     clearSession(quizConfig.storageKey);
     overlay.remove();
+    state = {
+      status: "intro",
+      studentName: "",
+      questions: [],
+      currentQuestionIndex: 0,
+      answers: {},
+      startTime: null,
+      completedTime: null,
+      locked: false,
+      practiceFeedback: null,
+      reviewOpen: false,
+      introNoticeSeen: false
+    };
     transitionRender(() => window.scrollTo({ top:0, behavior:"auto" }));
   });
   overlay.querySelector("#cancel-end-quiz").focus();
