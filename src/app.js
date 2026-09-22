@@ -60,6 +60,26 @@ function restore() {
   state = { ...state, status:"active", studentName:saved.studentName.slice(0, quizConfig.maxNameLength), questions, currentQuestionIndex:saved.currentQuestionIndex, answers:saved.answers, startTime:saved.startTime };
 }
 
+function transitionRender(afterRender) {
+  const current = root.firstElementChild;
+  if (!current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    render();
+    wireImages();
+    afterRender?.();
+    return;
+  }
+  current.classList.add("page-leaving");
+  window.setTimeout(() => {
+    render();
+    wireImages();
+    requestAnimationFrame(() => {
+      root.firstElementChild?.classList.add("page-entering");
+      requestAnimationFrame(() => root.firstElementChild?.classList.remove("page-entering"));
+    });
+    afterRender?.();
+  }, 180);
+}
+
 function render() {
   document.title = "Visual Vocabulary Quiz | MEMGO ENGLISH";
   if (!validation.ok) return renderUnavailable(validation.reason);
@@ -103,7 +123,7 @@ function startQuiz(event) {
   }
   state = { ...state, status:"active", studentName:name.slice(0,quizConfig.maxNameLength), questions:prepareQuestions(quizData, quizConfig), currentQuestionIndex:0, answers:{}, startTime:new Date().toISOString(), completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false };
   persist();
-  render();
+  transitionRender(() => window.scrollTo({ top:0, behavior:"smooth" }));
 }
 
 function sentenceMarkup(q) {
@@ -147,9 +167,9 @@ function renderQuiz() {
         <p class="sentence">${sentenceMarkup(q)}</p>
         <div class="divider"></div>
         <div class="choice-heading" dir="rtl"><h2>اختر الصورة الأنسب</h2><span>اختر إجابة واحدة فقط</span></div>
-        <div class="answer-notice" role="note">
+        <div class="answer-notice" role="note" dir="rtl">
           <span class="answer-notice-icon" aria-hidden="true">!</span>
-          <p><strong>Choose carefully.</strong> You can select only one image. Your first choice is final and will be counted in your score.</p>
+          <p><strong>انتبه قبل الاختيار:</strong> يمكنك اختيار صورة واحدة فقط. اختيارك الأول نهائي وسيُحتسب ضمن نتيجتك، لذلك تأكد من إجابتك قبل الضغط على الصورة.</p>
         </div>
         <div class="image-grid" role="radiogroup" aria-label="Image answers">
           ${q.images.map((img, idx) => imageChoice(q, img, idx)).join("")}
@@ -244,14 +264,14 @@ function nextQuestion() {
     state.status = "complete";
     state.completedTime = new Date().toISOString();
     clearSession(quizConfig.storageKey);
-    setTimeout(render, 120);
+    transitionRender();
     return;
   }
   state.currentQuestionIndex += 1;
   state.locked = false;
   state.practiceFeedback = null;
   persist();
-  setTimeout(() => { render(); wireImages(); window.scrollTo({ top:0, behavior:"smooth" }); }, 100);
+  transitionRender(() => window.scrollTo({ top:0, behavior:"smooth" }));
 }
 
 function preloadNext() {
@@ -313,8 +333,7 @@ function reviewImage(img) {
 function restart() {
   clearSession(quizConfig.storageKey);
   state = { status:"intro", studentName:state.studentName, questions:[], currentQuestionIndex:0, answers:{}, startTime:null, completedTime:null, locked:false, practiceFeedback:null, reviewOpen:false };
-  render();
-  document.querySelector("#student-name")?.focus();
+  transitionRender(() => document.querySelector("#student-name")?.focus());
 }
 
 function renderUnavailable(message) {
